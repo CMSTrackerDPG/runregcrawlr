@@ -16,12 +16,11 @@ from math import ceil
 
 import requests
 
-from .singleton import Singleton
 
 logger = logging.getLogger(__name__)
 
 
-class RestHubClient(metaclass=Singleton):
+class RestHubClient:
     """
     Implements a simple client that accesses a RestHub API
 
