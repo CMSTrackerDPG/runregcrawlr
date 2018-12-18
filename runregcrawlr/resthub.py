@@ -11,12 +11,9 @@
 # or submit itself to any jurisdiction.
 
 import logging
-from json import JSONDecodeError
 from math import ceil
 
 import requests
-
-from .singleton import Singleton
 
 logger = logging.getLogger(__name__)
 
