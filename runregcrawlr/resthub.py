@@ -21,7 +21,7 @@ from .singleton import Singleton
 logger = logging.getLogger(__name__)
 
 
-class RestHubClient(metaclass=Singleton):
+class RestHubClient():
     """
     Implements a simple client that accesses a RestHub API
 
@@ -83,7 +83,7 @@ class RestHubClient(metaclass=Singleton):
             if media_type:
                 return response.content.decode("utf-8")
             return response.json()
-        except JSONDecodeError as e:
+        except ValueError as e:
             logger.error(e)
             return {}
 
