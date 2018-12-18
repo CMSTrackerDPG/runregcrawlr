@@ -11,7 +11,7 @@
 # or submit itself to any jurisdiction.
 
 import argparse
-import json
+import simplejson
 
 from .crawler import crawl
 
@@ -46,7 +46,7 @@ def main():
         run_number_to=args.max,
         run_number_in=args.list,
     )
-    save_to_disk(json.dumps(runs, indent=2))
+    save_to_disk(simplejson.dumps(runs, indent=2))
     print("Stored {} entries in file '{}'".format(len(runs), OUTPUT_FILE_NAME))
 
 

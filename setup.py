@@ -28,7 +28,7 @@ setup(
     author="Peter Stein",
     author_email="peter.stein@cern.ch",
     packages=["runregcrawlr"],
-    install_requires=["requests", "future"],
+    install_requires=["requests", "simplejson", "future"],
     classifiers=["License :: OSI Approved :: GNU General Public License v3 (GPLv3)"],
     entry_points={"console_scripts": ["runregcrawl=runregcrawlr.main:main"]},
 )

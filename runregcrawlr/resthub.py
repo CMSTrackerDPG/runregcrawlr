@@ -11,7 +11,7 @@
 # or submit itself to any jurisdiction.
 
 import logging
-from json import JSONDecodeError
+from simplejson import JSONDecodeError
 from math import ceil
 
 import requests
