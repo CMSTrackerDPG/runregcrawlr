@@ -100,7 +100,7 @@ class RestHubClient:
             resource = "/query/{}/page/{}/{}/data".format(
                 query_id, self.row_limit, page + 1
             )
-            response = self._get_json_response(resource, inline_clob)
+            response = self._get_json_response(resource, inline_clob=inline_clob)
             entries["data"].extend(response["data"])
 
         return entries

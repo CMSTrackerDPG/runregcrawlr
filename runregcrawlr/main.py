@@ -13,7 +13,7 @@
 import argparse
 import simplejson
 
-from .crawler import crawl
+from runregcrawlr.crawler import crawl
 
 OUTPUT_FILE_NAME = "runregcrawlr-output.json"
 
@@ -40,14 +40,17 @@ def save_to_disk(content):
 def main():
     args = parse_arguments()
 
-    runs = crawl(
-        run_number=args.run,
-        run_number_from=args.min,
-        run_number_to=args.max,
-        run_number_in=args.list,
-    )
-    save_to_disk(simplejson.dumps(runs, indent=2))
-    print("Stored {} entries in file '{}'".format(len(runs), OUTPUT_FILE_NAME))
+    if args.run or args.min or args.max or args.list:
+        runs = crawl(
+            run_number=args.run,
+            run_number_from=args.min,
+            run_number_to=args.max,
+            run_number_in=args.list,
+        )
+        save_to_disk(simplejson.dumps(runs, indent=2))
+        print("Stored {} entries in file '{}'".format(len(runs), OUTPUT_FILE_NAME))
+    else:
+        print("Please use at least one argument")
 
 
 if __name__ == "__main__":
