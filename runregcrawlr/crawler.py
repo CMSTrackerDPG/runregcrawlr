@@ -14,12 +14,26 @@ import re
 
 from runregcrawlr.globalworkspace import GlobalWorkspace
 from runregcrawlr.runinfo import RunInfo
+from runregcrawlr.tracker import TrackerWorkspace
 
 
-def crawl(*args, **kwargs):
-    runinfo_runs = RunInfo().get_runs(*args, **kwargs)
-    global_runs = GlobalWorkspace().get_runs(*args, **kwargs)
+def crawl_runinfo(*args, **kwargs):
+    return RunInfo().get_runs(*args, **kwargs)
 
+
+def crawl_global(*args, **kwargs):
+    return GlobalWorkspace().get_runs(*args, **kwargs)
+
+
+def crawl_tracker(*args, **kwargs):
+    return TrackerWorkspace().get_runs(*args, **kwargs)
+
+
+def crawl_runs_txt(*args, **kwargs):
+    return TrackerWorkspace().get_runs_txt(*args, **kwargs)
+
+
+def combine_runinfo_global_runs(runinfo_runs, global_runs):
     for run in runinfo_runs:
         run_number = run["run_number"]
         for global_run in list(
@@ -29,6 +43,12 @@ def crawl(*args, **kwargs):
 
     _add_reco_and_run_type(global_runs)
     return global_runs
+
+
+def crawl(*args, **kwargs):
+    runinfo_runs = crawl_runinfo(*args, **kwargs)
+    global_runs = crawl_global(*args, **kwargs)
+    return combine_runinfo_global_runs(runinfo_runs, global_runs)
 
 
 def _add_reco_and_run_type(global_runs):

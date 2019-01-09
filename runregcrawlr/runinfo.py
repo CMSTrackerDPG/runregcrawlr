@@ -32,7 +32,13 @@ class RunInfo:
             "min(r.LHCFILL) as LHC_FILL, "
             "max(r.LUMISECTION) as LUMISECTIONS, "
             "sum(r.DELIVLUMISECTION) as RUM_LUMI, "
-            "sum(r.LIVELUMISECTION) as RUN_LIVE_LUMI "
+            "sum(r.LIVELUMISECTION) as RUN_LIVE_LUMI, "
+            "sum(r.TIBTID_READY) as TIBTID_READY_SUM, "
+            "sum(r.TOB_READY) as TOB_READY_SUM, "
+            "sum(r.TECP_READY) as TECP_READY_SUM, "
+            "sum(r.TECM_READY) as TECM_READY_SUM, "
+            "sum(r.BPIX_READY) as BPIX_READY_SUM, "
+            "sum(r.FPIX_READY) as FPIX_READY_SUM "
             "from runinfo.lumi_sections r where {run_where} ".format(
                 run_where=build_where_clause(
                     "r.runnumber",
