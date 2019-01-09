@@ -65,6 +65,24 @@ Output:
 Stored 61 entries in file 'runregcrawlr-output.json'
 ```
 
+#### Generating runs.txt
+
+A ```runs.txt``` can be generated with the ```--runs-txt``` parameter.
+
+For example to generate a runs.txt with all the runs from 2018 do this:
+ 
+```bash
+runregcrawl --runs-txt --min 313052 --max 327564
+```
+
+Output:
+
+```
+Stored 2969 entries in file 'runs.txt'
+```
+
+Note: The 2018 run number range should be ```313052``` - ```327744``` for cosmics and ```314472``` - ```327564``` for collisions.
+
 ## Development
 
 ```bash
