@@ -33,22 +33,28 @@ def crawl_runs_txt(*args, **kwargs):
     return TrackerWorkspace().get_runs_txt(*args, **kwargs)
 
 
-def combine_runinfo_global_runs(runinfo_runs, global_runs):
+def combine_runinfo_runs(runinfo_runs, dataset_runs):
     for run in runinfo_runs:
         run_number = run["run_number"]
         for global_run in list(
-            filter(lambda r: r["run_number"] == run_number, global_runs)
+            filter(lambda r: r["run_number"] == run_number, dataset_runs)
         ):
             global_run.update(run)
 
-    _add_reco_and_run_type(global_runs)
-    return global_runs
+    _add_reco_and_run_type(dataset_runs)
+    return dataset_runs
+
+
+def crawl_tracker_lumis(*args, **kwargs):
+    runinfo_runs = crawl_runinfo(*args, **kwargs)
+    tracker_runs = crawl_tracker(*args, **kwargs)
+    return combine_runinfo_runs(runinfo_runs, tracker_runs)
 
 
 def crawl(*args, **kwargs):
     runinfo_runs = crawl_runinfo(*args, **kwargs)
     global_runs = crawl_global(*args, **kwargs)
-    return combine_runinfo_global_runs(runinfo_runs, global_runs)
+    return combine_runinfo_runs(runinfo_runs, global_runs)
 
 
 def _add_reco_and_run_type(global_runs):

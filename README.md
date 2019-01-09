@@ -61,8 +61,23 @@ runregcrawl --min 326941 --max 327489
 ```
 
 Output:
+
 ```
 Stored 61 entries in file 'runregcrawlr-output.json'
+```
+
+#### Tracker Workspace
+
+Accesses the Tracker workspaces instead of the Global workspace.
+
+```bash
+runregcrawl --min 326941 --max 327489 --tracker-lumis
+```
+
+Output:
+
+```
+Stored 400 entries in file 'runregcrawlr-output.json'
 ```
 
 #### Generating runs.txt

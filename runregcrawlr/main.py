@@ -14,7 +14,14 @@ import argparse
 
 import simplejson
 
-from runregcrawlr.crawler import crawl, crawl_runinfo, crawl_global, crawl_runs_txt
+from runregcrawlr.crawler import (
+    crawl,
+    crawl_runinfo,
+    crawl_global,
+    crawl_runs_txt,
+    crawl_tracker,
+    crawl_tracker_lumis,
+)
 
 OUTPUT_FILE_NAME = "runregcrawlr-output.json"
 
@@ -74,8 +81,10 @@ def _determine_crawl_function(args):
         return crawl_runinfo
     if args.global_workspace:
         return crawl_global
-    if args.global_workspace:
-        return crawl_global
+    if args.tracker:
+        return crawl_tracker
+    if args.tracker_lumis:
+        return crawl_tracker_lumis
     if args.runs_txt:
         return crawl_runs_txt
     return crawl
