@@ -63,7 +63,7 @@ runregcrawl --min 326941 --max 327489
 Output:
 
 ```
-Stored 61 entries in file 'runregcrawlr-output.json'
+Stored 313 entries in file 'runregcrawlr-output.json'
 ```
 
 #### Tracker Workspace
@@ -78,6 +78,16 @@ Output:
 
 ```
 Stored 400 entries in file 'runregcrawlr-output.json'
+```
+
+To get all runs for the Year 2018 do:
+
+```bash
+runregcrawl --tracker-lumis --min 313052 --max 327564
+```
+
+```
+Stored 9352 entries in file 'runregcrawlr-output.json'
 ```
 
 #### Generating runs.txt
