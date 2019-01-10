@@ -52,7 +52,7 @@ def parse_arguments():
 
     parser.add_argument(
         "--exclude-cosmics",
-        help="Exclude commissioning and special runs",
+        help="Exclude cosmics runs",
         action="store_true",
     )
 

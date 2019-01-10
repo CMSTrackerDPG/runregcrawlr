@@ -44,6 +44,7 @@ runregcrawl --help
 usage: runregcrawl [-h] [--min MIN] [--max MAX] [--run RUN]
                    [--list [LIST [LIST ...]]] [--workspace {global,tracker}]
                    [--add-lumis] [--runs-txt] [--exclude-non-regular]
+                   [--exclude-cosmics]
 
 CMS Run Registry crawler.
 
@@ -58,6 +59,7 @@ optional arguments:
   --runs-txt                    Generate a runs.txt file containing run number
                                 and reconstruction.
   --exclude-non-regular         Exclude commissioning and special runs
+  --exclude-cosmics             Exclude cosmics runs
 ```
 
 ### Example
