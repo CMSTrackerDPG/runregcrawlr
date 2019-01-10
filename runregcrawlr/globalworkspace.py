@@ -10,25 +10,13 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from .client import RunRegistryClient
+from .workspace import RunRegistryWorkspace
 from .utils import build_where_clause, list_to_dict
 
 
-class GlobalWorkspace:
+class GlobalWorkspace(RunRegistryWorkspace):
     def __init__(self):
-        self.runregistry = RunRegistryClient()
-        self.namespace = "runreg_global"
-        self.column_names = {}
-
-    def get_column_names(self, table):
-        if table not in self.column_names:
-            table_description = self.runregistry.get_table_description(
-                self.namespace, table
-            )
-            self.column_names[table] = [
-                column["name"].lower() for column in table_description["columns"]
-            ]
-        return self.column_names[table]
+        super(GlobalWorkspace, self).__init__("runreg_global")
 
     def get_runs(
         self,

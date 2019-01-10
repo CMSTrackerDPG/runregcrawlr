@@ -23,8 +23,6 @@ from runregcrawlr.crawler import (
     crawl_tracker_lumis,
 )
 
-OUTPUT_FILE_NAME = "runregcrawlr-output.json"
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -114,7 +112,7 @@ def main():
             content = _create_runs_txt_content(runs)
             num = content.count("\n")
         else:
-            filename = OUTPUT_FILE_NAME
+            filename = "runregcrawlr-output.json"
             content = simplejson.dumps(runs, indent=2)
             num = len(runs)
 

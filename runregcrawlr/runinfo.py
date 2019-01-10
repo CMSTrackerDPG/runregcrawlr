@@ -10,14 +10,13 @@
 # granted to it by virtue of its status as an Intergovernmental Organization
 # or submit itself to any jurisdiction.
 
-from .client import RunRegistryClient
+from .workspace import RunRegistryWorkspace
 from .utils import build_where_clause, list_to_dict
 
 
-class RunInfo:
+class RunInfo(RunRegistryWorkspace):
     def __init__(self):
-        self.runregistry = RunRegistryClient()
-        self.namespace = "runinfo"
+        super(RunInfo, self).__init__("runinfo")
 
     def get_runs(
         self,
