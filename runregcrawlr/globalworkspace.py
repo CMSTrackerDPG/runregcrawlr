@@ -16,6 +16,3 @@ from .workspace import RunRegistryWorkspace
 class GlobalWorkspace(RunRegistryWorkspace):
     def __init__(self):
         super(GlobalWorkspace, self).__init__("runreg_global")
-
-    def get_runs(self, **kwargs):
-        return self.get_dataset_runs(**kwargs)

@@ -14,9 +14,8 @@ def test_get_non_regular_run_numbers():
     all_runs = commissioning_runs + special_runs + normal_runs
 
     tracker = TrackerWorkspace()
-    runs = tracker.get_non_regular_run_numbers(run_number_in=all_runs)
-    run_numbers = set([run["run_number"] for run in runs])
-    expected = {314576, 314828, 319270, 318817, 319103}
+    run_numbers = tracker.get_non_regular_run_numbers(run_number_in=all_runs)
+    expected = [314576, 314828, 318817, 319103, 319270]
     assert expected == run_numbers
 
 
@@ -24,3 +23,11 @@ def test_get_run_range():
     tracker = TrackerWorkspace()
     runs = tracker.get_runs(run_number_from=315543, run_number_to=315583)
     assert 29 == len(runs)
+
+
+def test_get_run_txt():
+    tracker = TrackerWorkspace()
+    runs = tracker.get_runs_txt(run_number_from=315543, run_number_to=315583)
+    print(runs)
+    assert 29 == len(runs)
+    assert [315543, "Express", "Collisions"] == runs[0]

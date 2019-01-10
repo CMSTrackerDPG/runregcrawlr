@@ -42,16 +42,22 @@ runregcrawl --help
 
 ```
 usage: runregcrawl [-h] [--min MIN] [--max MAX] [--run RUN]
-                   [--list [LIST [LIST ...]]]
+                   [--list [LIST [LIST ...]]] [--workspace {global,tracker}]
+                   [--add-lumis] [--runs-txt] [--exclude-non-regular]
 
 CMS Run Registry crawler.
 
 optional arguments:
-  -h, --help                show this help message and exit
-  --min MIN                 Minimum run number
-  --max MAX                 Maximum run number
-  --run RUN                 Single run number
-  --list [LIST [LIST ...]]  Multiple run numbers
+  -h, --help                    show this help message and exit
+  --min MIN                     Minimum run number
+  --max MAX                     Maximum run number
+  --run RUN                     Single run number
+  --list [LIST [LIST ...]]      Multiple run numbers
+  --workspace {global,tracker}
+  --add-lumis                   Add lumisection and luminosity information.
+  --runs-txt                    Generate a runs.txt file containing run number
+                                and reconstruction.
+  --exclude-non-regular         Exclude commissioning and special runs
 ```
 
 ### Example
@@ -63,6 +69,7 @@ runregcrawl --min 326941 --max 327489
 Output:
 
 ```
+Using Global workspace
 Stored 313 entries in file 'runregcrawlr-output.json'
 ```
 
@@ -71,22 +78,24 @@ Stored 313 entries in file 'runregcrawlr-output.json'
 Accesses the Tracker workspaces instead of the Global workspace.
 
 ```bash
-runregcrawl --min 326941 --max 327489 --tracker-lumis
+runregcrawl --workspace tracker --min 326941 --max 327489
 ```
 
 Output:
 
 ```
+Using Tracker workspace
 Stored 400 entries in file 'runregcrawlr-output.json'
 ```
 
 To get all runs for the Year 2018 do:
 
 ```bash
-runregcrawl --tracker-lumis --min 313052 --max 327564
+runregcrawl --workspace tracker --add-lumis --min 313052 --max 327564
 ```
 
 ```
+Using Tracker workspace
 Stored 9352 entries in file 'runregcrawlr-output.json'
 ```
 
@@ -97,12 +106,13 @@ A ```runs.txt``` can be generated with the ```--runs-txt``` parameter.
 For example to generate a runs.txt with all the runs from 2018 do this:
  
 ```bash
-runregcrawl --runs-txt --min 313052 --max 327564
+ runregcrawl --runs-txt --workspace tracker --min 313052 --max 327564
 ```
 
 Output:
 
 ```
+Using Tracker workspace
 Stored 2969 entries in file 'runs.txt'
 ```
 

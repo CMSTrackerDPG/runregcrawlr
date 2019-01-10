@@ -14,14 +14,9 @@ import argparse
 
 import simplejson
 
-from runregcrawlr.crawler import (
-    crawl,
-    crawl_runinfo,
-    crawl_global,
-    crawl_runs_txt,
-    crawl_tracker,
-    crawl_tracker_lumis,
-)
+from runregcrawlr.crawler import get_runs_txt_data, get_data
+from runregcrawlr.globalworkspace import GlobalWorkspace
+from runregcrawlr.tracker import TrackerWorkspace
 
 
 def parse_arguments():
@@ -35,31 +30,17 @@ def parse_arguments():
     parser.add_argument("--run", help="Single run number")
     parser.add_argument("--list", nargs="*", help="Multiple run numbers")
 
-    group = parser.add_mutually_exclusive_group()
+    parser.add_argument("--workspace", choices=["global", "tracker"], default="global")
 
-    group.add_argument(
-        "--runinfo-workspace", help="Use only RunInfo workspace", action="store_true"
-    )
-
-    group.add_argument(
-        "--global-workspace", help="Use only Global workspace.", action="store_true"
-    )
-
-    group.add_argument(
-        "--tracker",
-        help="Use only Tracker workspace (Express and Prompt).",
+    parser.add_argument(
+        "--add-lumis",
+        help="Add lumisection and luminosity information.",
         action="store_true",
     )
 
-    group.add_argument(
-        "--tracker-lumis",
-        help="Use Tracker workspace (Express and Prompt) with Lumis.",
-        action="store_true",
-    )
-
-    group.add_argument(
+    parser.add_argument(
         "--runs-txt",
-        help="Generate a runs.txt file containg runnumber and reconstruction.",
+        help="Generate a runs.txt file containing run number and reconstruction.",
         action="store_true",
     )
 
@@ -77,21 +58,16 @@ def save_to_disk(content, filename):
         file.write(content)
 
 
-def _determine_crawl_function(args):
-    """
-    Analyzes command line arguments and returns corresponding crawling function
-    """
-    if args.runinfo_workspace:
-        return crawl_runinfo
-    if args.global_workspace:
-        return crawl_global
-    if args.tracker:
-        return crawl_tracker
-    if args.tracker_lumis:
-        return crawl_tracker_lumis
-    if args.runs_txt:
-        return crawl_runs_txt
-    return crawl
+def _determine_workspace(args):
+    workspace = args.workspace
+
+    if workspace == "tracker":
+        print("Using Tracker workspace")
+        return TrackerWorkspace
+    if workspace == "global":
+        print("Using Global workspace")
+        return GlobalWorkspace
+    raise Exception("Unkown workspace '{}'".format(workspace))
 
 
 def _create_runs_txt_content(runs):
@@ -105,28 +81,35 @@ def _create_runs_txt_content(runs):
 def main():
     args = parse_arguments()
 
-    if args.run or args.min or args.max or args.list:
-        crawl_function = _determine_crawl_function(args)
-        runs = crawl_function(
-            run_number=args.run,
-            run_number_from=args.min,
-            run_number_to=args.max,
-            run_number_in=args.list,
-        )
-
-        if args.runs_txt:
-            filename = "runs.txt"
-            content = _create_runs_txt_content(runs)
-            num = content.count("\n")
-        else:
-            filename = "runregcrawlr-output.json"
-            content = simplejson.dumps(runs, indent=2)
-            num = len(runs)
-
-        save_to_disk(content, filename)
-        print("Stored {} entries in file '{}'".format(num, filename))
-    else:
+    if not args.run and not args.min and not args.max and not args.list:
         print("Please use at least one run number argument")
+        return
+
+    kwargs = {
+        "run_number": args.run,
+        "run_number_from": args.min,
+        "run_number_to": args.max,
+        "run_number_in": args.list,
+    }
+
+    if args.add_lumis:
+        kwargs["add_lumis"] = True
+
+    workspace = _determine_workspace(args)
+
+    if args.runs_txt:
+        filename = "runs.txt"
+        runs = get_runs_txt_data(workspace, **kwargs)
+        content = _create_runs_txt_content(runs)
+        num = content.count("\n")
+    else:
+        filename = "runregcrawlr-output.json"
+        runs = get_data(workspace, **kwargs)
+        content = simplejson.dumps(runs, indent=2)
+        num = len(runs)
+
+    save_to_disk(content, filename)
+    print("Stored {} entries in file '{}'".format(num, filename))
 
 
 if __name__ == "__main__":

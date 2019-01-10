@@ -12,49 +12,31 @@
 
 import re
 
-from runregcrawlr.globalworkspace import GlobalWorkspace
 from runregcrawlr.runinfo import RunInfo
-from runregcrawlr.tracker import TrackerWorkspace
 
 
-def crawl_runinfo(*args, **kwargs):
-    return RunInfo().get_runs(*args, **kwargs)
+def get_runs_txt_data(WorkspaceClass, *args, **kwargs):
+    return WorkspaceClass().get_runs_txt(*args, **kwargs)
 
 
-def crawl_global(*args, **kwargs):
-    return GlobalWorkspace().get_runs(*args, **kwargs)
+def get_data(WorkspaceClass, add_lumis=False, *args, **kwargs):
+    data = WorkspaceClass().get_runs(*args, **kwargs)
+    if add_lumis:
+        lumis = RunInfo().get_runs(*args, **kwargs)
+        data = _combine(lumis, data)
+    return data
 
 
-def crawl_tracker(*args, **kwargs):
-    return TrackerWorkspace().get_runs(*args, **kwargs)
-
-
-def crawl_runs_txt(*args, **kwargs):
-    return TrackerWorkspace().get_runs_txt(*args, **kwargs)
-
-
-def combine_runinfo_runs(runinfo_runs, dataset_runs):
+def _combine(runinfo_runs, dataset_runs):
     for run in runinfo_runs:
         run_number = run["run_number"]
-        for global_run in list(
+        for dataset_run in list(
             filter(lambda r: r["run_number"] == run_number, dataset_runs)
         ):
-            global_run.update(run)
+            dataset_run.update(run)
 
     _add_reco_and_run_type(dataset_runs)
     return dataset_runs
-
-
-def crawl_tracker_lumis(*args, **kwargs):
-    runinfo_runs = crawl_runinfo(*args, **kwargs)
-    tracker_runs = crawl_tracker(*args, **kwargs)
-    return combine_runinfo_runs(runinfo_runs, tracker_runs)
-
-
-def crawl(*args, **kwargs):
-    runinfo_runs = crawl_runinfo(*args, **kwargs)
-    global_runs = crawl_global(*args, **kwargs)
-    return combine_runinfo_runs(runinfo_runs, global_runs)
 
 
 def _add_reco_and_run_type(global_runs):
