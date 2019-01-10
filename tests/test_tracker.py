@@ -31,3 +31,16 @@ def test_get_run_txt():
     print(runs)
     assert 29 == len(runs)
     assert [315543, "Express", "Collisions"] == runs[0]
+
+
+def test_get_cosmics_run_numbers():
+    cosmics_runs = [320481, 326945, 316706]
+    commissioning_runs = [314576, 314828]
+    special_runs = [319270, 318817, 319103]
+    normal_runs = [318820, 326943]
+    all_runs = cosmics_runs + commissioning_runs + special_runs + normal_runs
+
+    tracker = TrackerWorkspace()
+    run_numbers = tracker.get_cosmics_run_numbers(run_number_in=all_runs)
+    expected = [316706, 320481, 326945]
+    assert expected == run_numbers

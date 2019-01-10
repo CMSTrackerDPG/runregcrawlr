@@ -50,6 +50,12 @@ def parse_arguments():
         action="store_true",
     )
 
+    parser.add_argument(
+        "--exclude-cosmics",
+        help="Exclude commissioning and special runs",
+        action="store_true",
+    )
+
     return parser.parse_args()
 
 
@@ -73,8 +79,8 @@ def _determine_workspace(args):
 def _create_runs_txt_content(runs):
     content = ""
     for run in runs:
-        if "cosmic" not in run[2].lower() and "commissioning" not in run[2].lower():
-            content += "{} {} {}\n".format(run[0], run[1], run[2])
+        # if "cosmic" not in run[2].lower() and "commissioning" not in run[2].lower():
+        content += "{} {} {}\n".format(run[0], run[1], run[2])
     return content
 
 
@@ -94,6 +100,12 @@ def main():
 
     if args.add_lumis:
         kwargs["add_lumis"] = True
+
+    if args.exclude_non_regular:
+        kwargs["exclude_non_regular"] = True
+
+    if args.exclude_cosmics:
+        kwargs["exclude_cosmics"] = True
 
     workspace = _determine_workspace(args)
 

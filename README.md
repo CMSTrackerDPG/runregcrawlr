@@ -88,7 +88,18 @@ Using Tracker workspace
 Stored 400 entries in file 'runregcrawlr-output.json'
 ```
 
-To get all runs for the Year 2018 do:
+To get all non special collision runs of the year 2018 do:
+
+```bash
+runregcrawl --workspace tracker --add-lumis --exclude-cosmics --exclude-non-regular --min 313052 --max 327564
+```
+
+```
+Using Tracker workspace
+Stored 2201 entries in file 'runregcrawlr-output.json'
+```
+
+To get all runs of the year 2018 do:
 
 ```bash
 runregcrawl --workspace tracker --add-lumis --min 313052 --max 327564
@@ -103,17 +114,17 @@ Stored 9352 entries in file 'runregcrawlr-output.json'
 
 A ```runs.txt``` can be generated with the ```--runs-txt``` parameter.
 
-For example to generate a runs.txt with all the runs from 2018 do this:
+For example to generate a runs.txt with all non special collisions runs from 2018 do this:
  
 ```bash
- runregcrawl --runs-txt --workspace tracker --min 313052 --max 327564
+runregcrawl --runs-txt --workspace tracker --min 313052 --max 327564 --exclude-cosmics --exclude-non-regular
 ```
 
 Output:
 
 ```
 Using Tracker workspace
-Stored 2969 entries in file 'runs.txt'
+Stored 2201 entries in file 'runs.txt'
 ```
 
 Note: The 2018 run number range should be ```313052``` - ```327744``` for cosmics and ```314472``` - ```327564``` for collisions.

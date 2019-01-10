@@ -15,15 +15,46 @@ import re
 from runregcrawlr.runinfo import RunInfo
 
 
-def get_runs_txt_data(WorkspaceClass, *args, **kwargs):
-    return WorkspaceClass().get_runs_txt(*args, **kwargs)
+def get_runs_txt_data(
+    workspace_class, exclude_non_regular=False, exclude_cosmics=False, *args, **kwargs
+):
+    workspace = workspace_class()
+    runs = workspace.get_runs_txt(*args, **kwargs)
+
+    if exclude_non_regular:
+        non_regular_runs = workspace.get_non_regular_run_numbers(*args, **kwargs)
+        runs = list(filter(lambda run: run[0] not in non_regular_runs, runs))
+
+    if exclude_cosmics:
+        cosmics_runs = workspace.get_cosmics_run_numbers(*args, **kwargs)
+        runs = list(filter(lambda run: run[0] not in cosmics_runs, runs))
+
+    return runs
 
 
-def get_data(WorkspaceClass, add_lumis=False, *args, **kwargs):
-    data = WorkspaceClass().get_runs(*args, **kwargs)
+def get_data(
+    workspace_class,
+    add_lumis=False,
+    exclude_non_regular=False,
+    exclude_cosmics=False,
+    *args,
+    **kwargs
+):
+    workspace = workspace_class()
+    data = workspace.get_runs(*args, **kwargs)
+
     if add_lumis:
         lumis = RunInfo().get_runs(*args, **kwargs)
         data = _combine(lumis, data)
+
+    if exclude_non_regular:
+        non_regular_runs = workspace.get_non_regular_run_numbers(*args, **kwargs)
+        data = list(filter(lambda run: run["run_number"] not in non_regular_runs, data))
+
+    if exclude_cosmics:
+        cosmics_runs = workspace.get_cosmics_run_numbers(*args, **kwargs)
+        data = list(filter(lambda run: run["run_number"] not in cosmics_runs, data))
+
     return data
 
 
