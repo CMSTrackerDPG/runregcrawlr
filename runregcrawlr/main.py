@@ -63,10 +63,16 @@ def parse_arguments():
         action="store_true",
     )
 
+    parser.add_argument(
+        "--exclude-non-regular",
+        help="Exclude commissioning and special runs",
+        action="store_true",
+    )
+
     return parser.parse_args()
 
 
-def save_to_disk(content, filename=OUTPUT_FILE_NAME):
+def save_to_disk(content, filename):
     with open(filename, "w") as file:
         file.write(content)
 
@@ -107,6 +113,7 @@ def main():
             run_number_to=args.max,
             run_number_in=args.list,
         )
+
         if args.runs_txt:
             filename = "runs.txt"
             content = _create_runs_txt_content(runs)

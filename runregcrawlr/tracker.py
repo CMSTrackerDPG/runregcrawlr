@@ -13,83 +13,25 @@
 import re
 
 from .workspace import RunRegistryWorkspace
-from .utils import build_where_clause, list_to_dict
 
 
 class TrackerWorkspace(RunRegistryWorkspace):
     def __init__(self):
         super(TrackerWorkspace, self).__init__("runreg_tracker")
 
-    def get_runs(
-        self,
-        run_number=None,
-        run_number_from=None,
-        run_number_to=None,
-        run_number_in=None,
-        exclude_online=False,
-    ):
-        """
-        :param run_number:
-        :param run_number_from:
-        :param run_number_to:
-        :param run_number_in:
-        :return:
-        """
-        table = "datasets"
-        query = (
-            "select "
-            "* "
-            "from {namespace}.{table} r where {run_where}".format(
-                namespace=self.namespace,
-                table=table,
-                run_where=build_where_clause(
-                    "r.run_number",
-                    run_number,
-                    run_number_from,
-                    run_number_to,
-                    run_number_in,
-                ),
-            )
-        )
+    def get_runs(self, **kwargs):
+        return self.get_dataset_runs(**kwargs)
 
-        if exclude_online:
-            query += " and r.rda_name != '/Global/Online/ALL'"
+    def get_non_regular_run_numbers(self, **kwargs):
+        where = "(r.rda_name like '%ecial%' or r.rda_name like '%ommiss%')"
+        return self.get_dataset_runs(where=where, **kwargs)
 
-        response = self.runregistry.execute_query(query, inline_clob=True)
-        column_names = self.get_column_names(table)
-        return list_to_dict(response.get("data", None), column_names)
-
-    def get_runs_txt(
-        self,
-        run_number=None,
-        run_number_from=None,
-        run_number_to=None,
-        run_number_in=None,
-    ):
+    def get_runs_txt(self, **kwargs):
         """
         Returns run number, reconstruction type and run class
         """
-        table = "datasets"
-        query = (
-            "select "
-            "r.run_number, r.rda_name, r.run_class_name "
-            "from {namespace}.{table} r where {run_where}".format(
-                namespace=self.namespace,
-                table=table,
-                run_where=build_where_clause(
-                    "r.run_number",
-                    run_number,
-                    run_number_from,
-                    run_number_to,
-                    run_number_in,
-                ),
-            )
-        )
-
-        query += " order by r.run_number"
-
-        response = self.runregistry.execute_query(query, inline_clob=True)
-        runs = response.get("data")
+        fields = "r.run_number, r.rda_name, r.run_class_name"
+        runs = self.get_dataset_runs(fields=fields, **kwargs)
         for run in runs:
             run[1] = re.search(r"^\/[a-zA-Z]*", run[1]).group(0).replace("/", "")
             if run[1] == "Global":
