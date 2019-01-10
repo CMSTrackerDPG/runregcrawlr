@@ -32,13 +32,15 @@ def parse_arguments():
 
     parser.add_argument("--workspace", choices=["global", "tracker"], default="global")
 
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group()
+
+    group.add_argument(
         "--add-lumis",
         help="Add lumisection and luminosity information.",
         action="store_true",
     )
 
-    parser.add_argument(
+    group.add_argument(
         "--runs-txt",
         help="Generate a runs.txt file containing run number and reconstruction.",
         action="store_true",
@@ -51,9 +53,7 @@ def parse_arguments():
     )
 
     parser.add_argument(
-        "--exclude-cosmics",
-        help="Exclude cosmics runs",
-        action="store_true",
+        "--exclude-cosmics", help="Exclude cosmics runs", action="store_true"
     )
 
     return parser.parse_args()
