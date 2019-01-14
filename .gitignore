@@ -205,5 +205,5 @@ dmypy.json
 
 # End of https://www.gitignore.io/api/python,pycharm+all
 
-runregcrawlr-output.json*
+runregcrawlr-*.json*
 runs.txt*

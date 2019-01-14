@@ -29,8 +29,8 @@ def parse_arguments():
     parser.add_argument("--max", help="Maximum run number")
     parser.add_argument("--run", help="Single run number")
     parser.add_argument("--list", nargs="*", help="Multiple run numbers")
-
     parser.add_argument("--workspace", choices=["global", "tracker"], default="global")
+    parser.add_argument("--out", help="Output file name")
 
     group = parser.add_mutually_exclusive_group()
 
@@ -115,11 +115,12 @@ def main():
         content = _create_runs_txt_content(runs)
         num = content.count("\n")
     else:
-        filename = "runregcrawlr-output.json"
+        filename = "runregcrawlr-{}-output.json".format(args.workspace)
         runs = get_data(workspace, **kwargs)
         content = simplejson.dumps(runs, indent=2)
         num = len(runs)
 
+    filename = args.out if args.out else filename
     save_to_disk(content, filename)
     print("Stored {} entries in file '{}'".format(num, filename))
 

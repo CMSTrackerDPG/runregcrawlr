@@ -43,8 +43,8 @@ runregcrawl --help
 ```
 usage: runregcrawl [-h] [--min MIN] [--max MAX] [--run RUN]
                    [--list [LIST [LIST ...]]] [--workspace {global,tracker}]
-                   [--add-lumis] [--runs-txt] [--exclude-non-regular]
-                   [--exclude-cosmics]
+                   [--out OUT] [--add-lumis | --runs-txt]
+                   [--exclude-non-regular] [--exclude-cosmics]
 
 CMS Run Registry crawler.
 
@@ -55,6 +55,7 @@ optional arguments:
   --run RUN                     Single run number
   --list [LIST [LIST ...]]      Multiple run numbers
   --workspace {global,tracker}
+  --out OUT                     Output file name
   --add-lumis                   Add lumisection and luminosity information.
   --runs-txt                    Generate a runs.txt file containing run number
                                 and reconstruction.
@@ -72,7 +73,7 @@ Output:
 
 ```
 Using Global workspace
-Stored 313 entries in file 'runregcrawlr-output.json'
+Stored 313 entries in file 'runregcrawlr-global-output.json'
 ```
 
 #### Tracker Workspace
@@ -87,7 +88,7 @@ Output:
 
 ```
 Using Tracker workspace
-Stored 400 entries in file 'runregcrawlr-output.json'
+Stored 400 entries in file 'runregcrawlr-tracker-output.json'
 ```
 
 To get all non special collision runs of the year 2018 do:
@@ -98,7 +99,7 @@ runregcrawl --workspace tracker --add-lumis --exclude-cosmics --exclude-non-regu
 
 ```
 Using Tracker workspace
-Stored 2201 entries in file 'runregcrawlr-output.json'
+Stored 2201 entries in file 'runregcrawlr-tracker-output.json'
 ```
 
 To get all runs of the year 2018 do:
@@ -109,7 +110,7 @@ runregcrawl --workspace tracker --add-lumis --min 313052 --max 327564
 
 ```
 Using Tracker workspace
-Stored 9352 entries in file 'runregcrawlr-output.json'
+Stored 9352 entries in file 'runregcrawlr-tracker-output.json'
 ```
 
 #### Generating runs.txt
