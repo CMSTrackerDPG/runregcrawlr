@@ -16,7 +16,6 @@ from math import ceil
 
 import requests
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -115,10 +114,21 @@ class RestHubClient:
         :param query: SQL query string
         :return: query id
         """
-        response = requests.post(self.url + "/query?", data=query)
+        url = self.url + "/query?"
+        response = requests.post(url, data=query)
         if response.status_code == 400:
             raise ValueError(response.text)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            message = (
+                "Failed to POST query '{query}' to url '{url}'.\n"
+                "Status code: {status_code}.\n"
+                "Message: {error}."
+            ).format(query=query, url=url, status_code=response.status_code, error=e)
+
+            logger.error(message)
+            raise e
         return response.text
 
     def execute_query(self, query, media_type=None, inline_clob=False):
