@@ -11,6 +11,8 @@
 # or submit itself to any jurisdiction.
 
 import logging
+
+from requests import HTTPError
 from simplejson import JSONDecodeError
 from math import ceil
 
@@ -120,7 +122,7 @@ class RestHubClient:
             raise ValueError(response.text)
         try:
             response.raise_for_status()
-        except requests.exceptions.HTTPError as e:
+        except HTTPError as e:
             message = (
                 "Failed to POST query '{query}' to url '{url}'.\n"
                 "Status code: {status_code}.\n"

@@ -84,7 +84,12 @@ class RunRegistryWorkspace:
         return self.get_dataset_runs(**kwargs)
 
     def get_non_regular_run_numbers(self, **kwargs):
-        where = "(r.rda_name like '%ecial%' or r.rda_name like '%ommiss%' or r.run_class_name like '%ecial%' or r.run_class_name like '%ommiss%' )"
+        where = (
+            "(r.rda_name like '%ecial%' "
+            "or r.rda_name like '%ommiss%' "
+            "or r.run_class_name like '%ecial%' "
+            "or r.run_class_name like '%ommiss%' )"
+        )
         runs = self.get_dataset_runs(where=where, **kwargs)
         return sorted({run["run_number"] for run in runs})
 

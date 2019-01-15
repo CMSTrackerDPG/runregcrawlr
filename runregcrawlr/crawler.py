@@ -55,6 +55,7 @@ def get_data(
         cosmics_runs = workspace.get_cosmics_run_numbers(*args, **kwargs)
         data = list(filter(lambda run: run["run_number"] not in cosmics_runs, data))
 
+    _add_reco_and_run_type(data)
     return data
 
 
@@ -66,16 +67,18 @@ def _combine(runinfo_runs, dataset_runs):
         ):
             dataset_run.update(run)
 
-    _add_reco_and_run_type(dataset_runs)
     return dataset_runs
 
 
-def _add_reco_and_run_type(global_runs):
+def _add_reco_and_run_type(runs):
     """
     Adds information about the Reconstruction Type and Run Type (Cosmics/Collisions)
     """
-    for run in global_runs:
+    for run in runs:
         run["reco"] = (
-            re.search(r"^\/[a-zA-Z]*", run["rda_name"]).group(0).replace("/", "")
+            re.search(r"^\/[a-zA-Z]*", run["rda_name"])
+            .group(0)
+            .replace("/", "")
+            .replace("Global", "Online")
         )
         run["run_type"] = re.search(r"^[a-zA-Z]*", run["run_class_name"]).group(0)
