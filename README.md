@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/ptrstn/runregcrawlr.svg?branch=master)](https://travis-ci.com/ptrstn/runregcrawlr)
+[![Build Status](https://travis-ci.com/CMSTrackerDPG/runregcrawlr.svg?branch=master)](https://travis-ci.com/CMSTrackerDPG/runregcrawlr)
 
 # runregcrawlr
 
